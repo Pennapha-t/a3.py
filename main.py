@@ -1,82 +1,104 @@
-import random
+import pygame
+pygame.init()
 
-class Weapon:
-    def __init__(self, name, attack_power):
-        self.name = name
-        self.attack_power = attack_power
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+clock = pygame.time.Clock()
 
-    def use(self):
-        return f"Using {self.name} to attack with power {self.attack_power}"
-
-class Monster:
-    def __init__(self, name, health, attack_level):
-        self.name = name
-        self.health = health
-        self.attack_level = attack_level
-        self.weapons = []
-        self.current_weapon = None
-
-    def attack(self):
-        return f"{self.name} attacks with power {self.attack_level}"
-
-    def add_weapon(self, weapon):
-        if len(self.weapons) < 2:
-            self.weapons.append(weapon)
-            if len(self.weapons) == 1:
-                self.current_weapon = weapon
-
-    def switch_weapon(self):
-        if len(self.weapons) > 1:
-            self.current_weapon = self.weapons[1] if self.current_weapon == self.weapons[0] else self.weapons[0]
-            return f"{self.name} switched to {self.current_weapon.name}"
-        return f"{self.name}"
-
-    def use_weapon(self):
-        if self.current_weapon:
-            return self.current_weapon.use()
-        return f"{self.name}"
-
-class Dragon(Monster):
-    def __init__(self, name, health, attack_level, element):
-        super().__init__(name, health, attack_level)
-        self.element = element
-
-    def breathe_fire(self):
-        return f"{self.name} breathes {self.element} Blow"
-
-class MonsterNameGenerator:
+class Agent:
     def __init__(self):
-        self.animal_names = [
-            "Tiger", "Lion", "Wolf", "Eagle", "Hawk", "Bear", "Panther", "Cobra", "Leopard", "Falcon",
-            "Cat", "Shark", "Dog", "Cow", "Goat", "Hyena", "Jaguar", "Python", "Buffalo", "Tarantula"
-        ]
-        self.used_names = set()
+        self.x = WIDTH // 2
+        self.y = HEIGHT // 2
+        self.radius = 15
 
-    def generate_name(self):
-        if len(self.used_names) >= len(self.animal_names):
-            return "Unknown Monster"
-        while True:
-            name = random.choice(self.animal_names)
-            if name not in self.used_names:
-                self.used_names.add(name)
-                return name
+    def draw(self):
+        pygame.draw.circle(screen, (255, 0, 0), (self.x, int (self.y)), self.radius)
 
-name_generator = MonsterNameGenerator()
+agent = Agent()
 
-weapon_list = [ Weapon("Sword", 45),Weapon("Fire Bow", 60),Weapon("Club", 65),Weapon("Shuriken", 50), ]
+running = True
+while running:
+    screen.fill((0, 0, 0 ))
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-monsters = []
-for i in range(20):
-    monster_name = name_generator.generate_name()
-    monster = Dragon(monster_name, random.randint(100, 200), random.randint(20, 50), "Blow")
-    monster.add_weapon(random.choice(weapon_list))
-    monster.add_weapon(random.choice(weapon_list))
-    monsters.append(monster)
+    agent.draw()
+    pygame.display.flip()
+    clock.tick(60)
 
-for monster in monsters:
-    print(monster.attack())
-    print(monster.use_weapon())
-    print(monster.switch_weapon())
-    print(monster.use_weapon())
-    print(monster.breathe_fire())
-    print("-" * 30)
+pygame.quit()
+
+class Agent:
+    def __init__(self):
+        self.x = WIDTH // 2
+        self.y = HEIGHT // 2
+        self.radius = 15
+        self.vx = 0
+        self.vy = 0
+        self.ax = 0
+        self.ay = 0.5
+
+    def update(self):
+        self.vx += self.ax
+        self.vy += self.ay
+        self.x += self.vx
+        self.y += self.vy
+
+    def draw(self):
+        pygame.draw.circle(screen, (255, 0, 0), (int (self.x), int (self.y)), self.radius)
+
+while running:
+    screen.fill((0, 0, 0 ))
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+
+    agent.update()
+    agent.draw()
+    pygame.display.flip()
+            
+
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                agent.Jump()
+
+    agent.update()
+    agent.draw()
+
+    pygame.display.flip()
+    
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_SPACE]:
+        agent.vy = -10
+
+    agent.update()
+    agent.draw()
+    pygame.display.flip()
+
+class Agent:
+    self.x = WIDTH // 2
+    self.y = HEIGHT // 2
+    self.vx = 0
+    self.vy = 0
+    self.ax = 0
+    self.ay = 0.5
+    self.radius = 20
+
+    def __init__(self):
+        self.vx += self.ax
+        self.vy += self.ay
+        self.x += self.vx
+        self.y += self.vy
+
+        if self.y + self.radius > HEIGHT:
+            self.y = HEIGHT - self.radius
+            self.vy = -0.8 * self.vy
+    
+    
+
+
