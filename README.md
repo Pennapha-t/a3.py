@@ -1,1 +1,1 @@
-Repository for https://replit.com/@pastelskyk/a2.py
+
