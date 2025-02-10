@@ -36,7 +36,7 @@ class Agent:
         self.radius = 15
         self.vx = 0
         self.vy = 0
-        self.ax = 0
+        self.ax = -0.1
         self.ay = 0.5
 
     def update(self):
@@ -75,7 +75,15 @@ while running:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_SPACE]:
         agent.vy = -10
-
+    if keys[pygame.K_LEFT]:
+        agent.vx = -10
+    if keys[pygame.K_RIGHT]:
+        agent.vx = 10
+    if agent.right < 0:
+        agent.left = WIDTH
+    elif agent.left > WIDTH:
+        agent.right = 0
+    
     agent.update()
     agent.draw()
     pygame.display.flip()
