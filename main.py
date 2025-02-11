@@ -30,7 +30,7 @@ class Agent:
             self.y = HEIGHT - self.radius
             self.vy = -0.8 * self.vy  
         if self.x > WIDTH:
-            self.x = 0
+            self.x = 0            
         elif self.x < 0:
             self.x = WIDTH
 
